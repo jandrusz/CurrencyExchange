@@ -1,2 +1,14 @@
 id;code;description
-1;PLN;Polski złoty
+1;PLN;złoty polski
+2;USD;dolar amerykański
+3;AUD;dolar australijski
+4;CAD;dolar kanadyjski
+5;EUR;euro
+6;HUF;forint
+7;CHF;frank szwajcarski
+8;GBP;funt szterling
+9;JPY;jen
+10;CZK;korona czeska
+11;DKK;korona duńska
+12;NOK;korona norweska
+13;SEK;korona szwedzka
