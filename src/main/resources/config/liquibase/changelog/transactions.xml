@@ -12,17 +12,15 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="side" type="varchar(1)"/>
-            <column name="inserted_amount" type="varchar(50)"/>
-            <column name="currency_1" type="number(20,4)"/>
-            <column name="calculated_amount" type="varchar(50)"/>
-            <column name="currency_2" type="number(20,4)"/>
+            <column name="inserted_amount" type="number(20,4)"/>
+            <column name="currency_1" type="varchar(50)"/>
+            <column name="calculated_amount" type="number(20,4)"/>
+            <column name="currency_2" type="varchar(50)"/>
             <column name="exchange" type="varchar(256)"/>
             <column name="bill_account_K" type="varchar(50)"/>
             <column name="bill_account_S" type="varchar(50)"/>
             <column name="user_id" type="bigint"/>
-            <column name="inclusion_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
+            <column name="inclusion_date" type="timestamp"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
