@@ -22,7 +22,7 @@ import java.time.Instant;
  * A user.
  */
 @Entity
-@Table(name = "jhi_user")
+@Table(name = "users")
 
 public class User extends AbstractAuditingEntity implements Serializable {
 
