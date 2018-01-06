@@ -6,6 +6,7 @@
 
     <include file="config/liquibase/changelog/initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/transactions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/available_currencies.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
