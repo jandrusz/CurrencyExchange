@@ -3,8 +3,14 @@
         <div class="col-md-8">
             <h1>Rejestracja</h1>
 
-            <div class="alert alert-success" *ngIf="success">
-                <strong>Zarejestrowano!</strong>
+            <div *ngIf="success">
+                <div class="alert alert-success">
+                    <strong>Twój identyfikator to {{registerAccount.login}}. Przy jego użyciu oraz hasła podanego podczas rejestracji możesz zalogować się do systemu.</strong>
+                </div>
+                <a (click)="openLogin()" id="open-login">
+                    <span>Przejdź do strony logowania</span>
+                </a>
+
             </div>
 
             <div class="alert alert-danger" *ngIf="error">
