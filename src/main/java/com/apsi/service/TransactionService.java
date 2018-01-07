@@ -1,5 +1,6 @@
 package com.apsi.service;
 
+import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.apsi.domain.Transaction;
@@ -24,4 +25,7 @@ public class TransactionService {
         return transactionRepository.save(transactionMapper.mapToTransaction(transactionDTO));
     }
 
+    public List<TransactionDTO> getTransactionsByUserId(Integer userid) {
+        return transactionMapper.mapToTransactionDTO(transactionRepository.findAllByUserIdOrderByIdDesc(userid));
+    }
 }
