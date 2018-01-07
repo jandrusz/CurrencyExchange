@@ -8,6 +8,7 @@ import { CurrencyExchangeSharedModule, UserRouteAccessService } from './shared';
 import { CurrencyExchangeHomeModule } from './home/home.module';
 import { CurrencyExchangeAdminModule } from './admin/admin.module';
 import { CurrencyExchangeAccountModule } from './account/account.module';
+import { CurrencyExchangeMenuModule } from './menu/menu.module';
 import { CurrencyExchangeEntityModule } from './entities/entity.module';
 
 import { customHttpProvider } from './blocks/interceptor/http.provider';
@@ -35,6 +36,7 @@ import {
         CurrencyExchangeAdminModule,
         CurrencyExchangeAccountModule,
         CurrencyExchangeEntityModule,
+        CurrencyExchangeMenuModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
