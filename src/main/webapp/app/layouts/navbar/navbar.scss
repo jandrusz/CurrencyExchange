@@ -69,8 +69,15 @@ Logo styles
             width: 70px;
             display: inline-block;
             vertical-align: middle;
-            background: url("../../../content/images/currency-exchange-logo.png") no-repeat center center;
+            background: url("../../../content/images/currency-exchange.png") no-repeat center center;
             background-size: contain;
         }
     }
+}
+
+.user-name {
+    color: #ccc;
+    padding: 0.4rem;
+    margin-left: 1rem;
+    font-weight: 400;
 }
