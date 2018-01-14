@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ExchangeRatesApiService} from './exchange-rates-api.service';
+import {IntervalObservable} from 'rxjs/observable/IntervalObservable';
 
 @Component({
     selector: 'jhi-exchange-rates',
@@ -8,15 +9,22 @@ import {ExchangeRatesApiService} from './exchange-rates-api.service';
         'exchangeRates.scss'
     ]
 })
-export class ExchangeRatesComponent implements OnInit {
+export class ExchangeRatesComponent implements OnInit, OnDestroy {
 
     public values: any[];
+    private alive: boolean;
 
     constructor(private exchangeRatesApiService: ExchangeRatesApiService) {
+        this.alive = true;
     }
 
     ngOnInit() {
-        this.refresh()
+        this.refresh();
+        IntervalObservable.create(60000)
+            .takeWhile(() => this.alive)
+            .subscribe(() => {
+                this.refresh();
+            });
     }
 
     refresh() {
@@ -29,4 +37,7 @@ export class ExchangeRatesComponent implements OnInit {
         });
     }
 
+    ngOnDestroy() {
+        this.alive = false;
+    }
 }
