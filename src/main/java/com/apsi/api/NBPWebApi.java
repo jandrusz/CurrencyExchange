@@ -14,8 +14,7 @@ public class NBPWebApi {
     private final List<String> CURRENCIES = Lists.newArrayList("USD","AUD","CAD","EUR","HUF","CHF","GBP","JPY","CZK","DKK","NOK","SEK");
 
     public ExchangeRateDTO getExchangeRateForCurrency(String currency) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("http://api.nbp.pl/api/exchangerates/rates/c/" + currency, ExchangeRateDTO.class);
+        return new RestTemplate().getForObject("http://api.nbp.pl/api/exchangerates/rates/c/" + currency, ExchangeRateDTO.class);
     }
 
     public List<ExchangeRateDTO> getExchangeRatesForAllCurrencies() {

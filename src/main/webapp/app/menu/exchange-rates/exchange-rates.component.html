@@ -3,5 +3,26 @@
         <div class="col-md-8">
             <h2>Kursy walut</h2>
         </div>
+
+    </div>
+    <div class="row">
+        <table class="exchange-rates-table">
+            <tr>
+                <th>KOD</th>
+                <th>Chcę kupić</th>
+                <th>Chcę sprzedać</th>
+            </tr>
+            <tr *ngFor='let value of values; trackBy: index;'>
+                <td class="exchange-rates-row">{{value.code}}</td>
+                <td class="exchange-rates-row">{{value.rates[0].ask}}</td>
+                <td class="exchange-rates-row">{{value.rates[0].bid}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="row">
+        <button type="button" class="refresh-button btn btn-primary" (click)="refresh()">
+            <i class="fa fa-refresh" aria-hidden="true"></i>
+            Odśwież
+        </button>
     </div>
 </div>

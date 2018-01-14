@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-    selector: 'jhi-settings',
+    selector: 'jhi-transactions-history',
     templateUrl: './transactions-history.component.html'
 })
 export class TransactionsHistoryComponent implements OnInit {

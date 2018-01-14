@@ -1,5 +1,6 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {DatePipe} from '@angular/common';
+import {ExchangeRatesApiService} from '../menu/exchange-rates/exchange-rates-api.service';
 
 import {
     CurrencyExchangeSharedLibsModule,
@@ -34,6 +35,7 @@ import {
         CSRFService,
         AuthServerProvider,
         UserService,
+        ExchangeRatesApiService,
         DatePipe
     ],
     entryComponents: [JhiLoginModalComponent],
@@ -46,4 +48,5 @@ import {
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class CurrencyExchangeSharedModule {}
+export class CurrencyExchangeSharedModule {
+}
