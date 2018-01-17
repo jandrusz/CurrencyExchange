@@ -1,7 +1,9 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConcludingTransactionsApiService} from './concluding-transactions-api.service';
-import {CurrencyDTO} from './currency-dto';
+import {CurrencyDTO} from '../dto/currency-dto';
+import {ExchangeRatesApiService} from '../exchange-rates/exchange-rates-api.service';
+import {ExchangeRateDTO} from '../dto/exchange-rate-dto';
 
 @Component({
     selector: 'jhi-concluding-transactions',
@@ -12,11 +14,16 @@ import {CurrencyDTO} from './currency-dto';
 })
 export class ConcludingTransactionsModalComponent implements AfterViewInit {
 
-    value: string;
+    value: any;
     fieldsAreCorrect: boolean = true;
-    bankAccountK: string;
-    bankAccountS: string;
+    showAcceptOrCancelTransaction: boolean = false;
+    showTransactionSum: boolean = false;
+    fieldsDisabled: boolean = false;
+    transactionSum: any;
+    bankAccountK: any;
+    bankAccountS: any;
     option: string;
+    exchangeRate: ExchangeRateDTO;
     currency1: CurrencyDTO;
     currency2: CurrencyDTO;
     options: Array<Object> = [
@@ -27,7 +34,8 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     currencies2: Array<CurrencyDTO>;
 
     constructor(public activeModal: NgbActiveModal,
-                private concludingTransactionsApiService: ConcludingTransactionsApiService) {
+                private concludingTransactionsApiService: ConcludingTransactionsApiService,
+                private exchangeRatesApiService: ExchangeRatesApiService) {
     }
 
     ngAfterViewInit(): void {
@@ -45,21 +53,71 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         });
     }
 
+    disabled() {
+        return this.fieldsDisabled;
+    }
+
     check() {
-        if (!this.option || !this.currency1 || !this.currency2 || !this.value || !this.bankAccountK ||
-            !this.bankAccountS || this.bankAccountK.length < 26 || this.bankAccountS.length < 26 || this.value.substr(this.value.indexOf(',') + 1).length > 2) {
+        if (!this.allFieldsAreCorrect()) {
             this.fieldsAreCorrect = false;
         } else {
             this.fieldsAreCorrect = true;
+            this.showTransactionSum = true;
+            let exchangeRate = this.getExchangeRateForUser();
+            this.transactionSum = this.isFirstCurrencyPLN() ? this.value / exchangeRate : this.value * exchangeRate;
+            this.transactionSum = this.transactionSum.toFixed(2);
+            this.fieldsDisabled = true;
+            this.showAcceptOrCancelTransaction = true;
         }
+    }
+
+    getExchangeRateForUser() {
+        if (this.exchangeRate && this.option === 'SELL') {
+            return this.exchangeRate.rates[0].ask;
+        }
+        return this.exchangeRate.rates[0].bid;
+    }
+
+    allFieldsAreCorrect() { // TODO walidacja dwóch miejsc po przecinku dla value
+        return this.option &&
+            this.currency1 &&
+            this.currency2 &&
+            this.value &&
+            this.bankAccountK &&
+            this.bankAccountS &&
+            this.bankAccountK.length === 26 &&
+            this.bankAccountS.length === 26;
+    }
+
+    getExchangeRate() {
+        return this.exchangeRatesApiService.getCurrency(this.choseProperCurrencyCode()).toPromise().then((exchangeRate) => {
+            if (exchangeRate) {
+                this.exchangeRate = exchangeRate;
+            }
+        }).catch((err) => {
+            return null;
+        });
+    }
+
+    choseProperCurrencyCode() {
+        return this.isFirstCurrencyPLN() ? this.currency2.code : this.currency1.code;
+    }
+
+    isFirstCurrencyPLN() {
+        return this.currency1.code === 'PLN';
     }
 
     cancel() {
         this.activeModal.dismiss('cancel');
     }
 
-    actionOption() {
-        console.log(this.option);
+    acceptTransaction() {
+        // TODO zapis transakcji
+    }
+
+    cancelTransaction() {
+        this.fieldsDisabled = false;
+        this.showAcceptOrCancelTransaction = false
     }
 
     actionCurrency1() {
@@ -71,6 +129,7 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         if ((this.currency1.code !== 'PLN')) {
             this.currency2 = this.currencies2[0];
         }
+        this.getExchangeRate();
     }
 
     actionCurrency2() {
@@ -82,5 +141,6 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         if ((this.currency2.code !== 'PLN')) {
             this.currency1 = this.currencies1[0];
         }
+        this.getExchangeRate();
     }
 }

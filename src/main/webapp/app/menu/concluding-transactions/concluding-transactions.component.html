@@ -5,44 +5,57 @@
     </button>
 </div>
 <div class="modal-body">
-    <div class="row concluding-transactions-row">
-        <div class="col-md-12">
-            <select type="text" [(ngModel)]="option" (ngModelChange)="actionOption()">
-                <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
-            </select>
+    <div class="row concluding-transactions-row" style="margin-left: 0.1rem;">
+        <div class="col-md-6" style="margin-top: 1.5rem">
+            <div class="row">
+                <select [disabled]="disabled()" type="text" [(ngModel)]="option">
+                    <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
+                </select>
+            </div>
+            <div class="row" style="margin-top: 0.8rem">
+                <span>Kwota</span>
+                </br> <!--TODO walidacja aby przyjmować tylko cyfry + tylko dwie po kropce-->
+                <input [(ngModel)]="value"
+                       [disabled]="disabled()"
+                       class="form-control"
+                       placeholder="0,00zł"
+                       size="30"/>
+            </div>
         </div>
-    </div>
-    <div class="row concluding-transactions-row">
         <div class="col-md-6">
-            <span>Kwota</span>
-            </br> <!--TODO walidacja-->
-            <input [(ngModel)]="value"
-
-                   class="form-control"
-                   placeholder="0,00zł"
-                   size="30"/>
-        </div>
-        <div class="col-md-3">
-            <span>Waluta 1</span>
-            </br>
-            <select type="text" [(ngModel)]="currency1" (ngModelChange)="actionCurrency1()">
-                <option *ngFor="let currency of currencies1" [ngValue]="currency">{{currency.code}}</option>
-            </select>
-        </div>
-        <div class="col-md-3">
-            <span>Waluta 2</span>
-            </br>
-            <select type="text" [(ngModel)]="currency2" (ngModelChange)="actionCurrency2()">
-                <option *ngFor="let currency of currencies2" [ngValue]="currency">{{currency.code}}</option>
-            </select>
+            <div class="row">
+                <div class="col-md-6">
+                    <span>Waluta 1</span>
+                    </br>
+                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency1" (ngModelChange)="actionCurrency1()">
+                        <option *ngFor="let currency of currencies1" [ngValue]="currency">{{currency.code}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <span>Waluta 2</span>
+                    </br>
+                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency2" (ngModelChange)="actionCurrency2()">
+                        <option *ngFor="let currency of currencies2" [ngValue]="currency">{{currency.code}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 1.5rem;">
+                <div class="col-md-12">
+                    <div class="alert alert-success" *ngIf="exchangeRate && option">
+                        <strong *ngIf="option === 'SELL'">Kurs: {{exchangeRate.rates[0].ask}}</strong>
+                        <strong *ngIf="option === 'BUY'">Kurs: {{exchangeRate.rates[0].bid}}</strong>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row concluding-transactions-row">
         <div class="col-md-12">
             <span>Kupuję na</span>
-            </br> <!--TODO walidacja-->
+            </br> <!--TODO walidacja aby przyjmować tylko cyfry-->
             <input [(ngModel)]="bankAccountK"
                    maxlength="26"
+                   [disabled]="disabled()"
                    class="form-control"
                    placeholder="26 cyfrowy numer konta"
                    size="40"
@@ -52,25 +65,43 @@
     <div class="row concluding-transactions-row">
         <div class="col-md-12">
             <span>Sprzedaję z</span>
-            </br> <!--TODO walidacja-->
+            </br> <!--TODO walidacja aby przyjmować tylko cyfry-->
             <input [(ngModel)]="bankAccountS"
                    maxlength="26"
+                   [disabled]="disabled()"
                    class="form-control"
                    placeholder="26 cyfrowy numer konta"
                    size="40"/>
         </div>
     </div>
     <div class="row concluding-transactions-row">
-        <div class="col-md-4 ">
+        <div class="col-md-4">
             <button type="button" class="btn btn-primary" (click)="check()">
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                Sprawdź
+                <i class="fa fa-money" aria-hidden="true"></i>
+                Przelicz
             </button>
         </div>
         <div class="col-md-8">
             <div class="alert alert-danger" *ngIf="!fieldsAreCorrect">
                 <strong>Poprawnie uzupełnij wszystkie pola.</strong>
             </div>
+            <div class="alert alert-success" *ngIf="fieldsAreCorrect && showTransactionSum">
+                <strong>Kwota transakcji:{{transactionSum}} zł</strong>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="showAcceptOrCancelTransaction">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-primary" (click)="acceptTransaction()">
+                <i class="fa fa-check" aria-hidden="true"></i>
+                Zatwierdź
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-danger" style="float: right;" (click)="cancelTransaction()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                Anuluj
+            </button>
         </div>
     </div>
 </div>

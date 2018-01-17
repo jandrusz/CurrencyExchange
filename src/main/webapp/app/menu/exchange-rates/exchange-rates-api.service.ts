@@ -10,4 +10,9 @@ export class ExchangeRatesApiService  {
     get(): Observable<any> {
         return this.http.get(SERVER_API_URL + 'api/exchange-rates').map((res: Response) => res.json());
     }
+
+    getCurrency(currency): Observable<any> {
+        return this.http.get(SERVER_API_URL + 'api/exchange-rates/' + currency).map((res: Response) => res.json());
+    }
+
 }
