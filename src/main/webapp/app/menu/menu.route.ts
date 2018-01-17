@@ -2,14 +2,12 @@ import { Routes } from '@angular/router';
 
 import {
     transactionsHistoryRoute,
-    exchangeRatesRoute,
-    concludingTransactionsRoute
+    exchangeRatesRoute
 } from './';
 
 const MENU_ROUTES = [
     transactionsHistoryRoute,
-    exchangeRatesRoute,
-    concludingTransactionsRoute
+    exchangeRatesRoute
 ];
 
 export const accountState: Routes = [{

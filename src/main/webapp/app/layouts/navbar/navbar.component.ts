@@ -4,6 +4,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service';
 import { Principal, LoginModalService, LoginService } from '../../shared';
+import {ConcludingTransactionsModalService} from '../../menu/concluding-transactions/concluding-transactions-modal.service';
 
 import { VERSION } from '../../app.constants';
 
@@ -27,6 +28,7 @@ export class NavbarComponent implements OnInit {
         private loginService: LoginService,
         private principal: Principal,
         private loginModalService: LoginModalService,
+        private concludingTransactionsModalService: ConcludingTransactionsModalService,
         private profileService: ProfileService,
         private router: Router,
         private eventManager: JhiEventManager,
@@ -58,6 +60,10 @@ export class NavbarComponent implements OnInit {
 
     login() {
         this.modalRef = this.loginModalService.open();
+    }
+
+    concludeTransaction() {
+        this.modalRef = this.concludingTransactionsModalService.open();
     }
 
     logout() {

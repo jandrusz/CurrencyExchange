@@ -1,7 +1,63 @@
-<div>
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2>Zawieranie transakcji</h2>
+<div class="modal-header">
+    <h4 class="modal-title">Zawieranie transakcji</h4>
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+        <span aria-hidden="true">x</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row concluding-transactions-row">
+        <div class="ng-col-12">
+            <select type="text" [(ngModel)]="option" (ngModelChange)="actionOption()">
+                <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
+            </select>
         </div>
+    </div>
+    <div class="row concluding-transactions-row">
+        <div class="ng-col-4">
+            <span>Kwota</span>
+            </br> <!--TODO walidacja-->
+            <input class="form-control"
+                   placeholder="0,00zł"
+                   size="30"/>
+        </div>
+        <div class="ng-col-4 currency-dropdown">
+            <span>Waluta 1</span>
+            </br>
+            <select type="text" [(ngModel)]="currency1" (ngModelChange)="actionCurrency1()">
+                <option *ngFor="let currency of currencies1" [ngValue]="currency">{{currency.code}}</option>
+            </select>
+        </div>
+        <div class="ng-col-4 currency-dropdown">
+            <span>Waluta 2</span>
+            </br>
+            <select type="text" [(ngModel)]="currency2" (ngModelChange)="actionCurrency2()">
+                <option *ngFor="let currency of currencies2" [ngValue]="currency">{{currency.code}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="row concluding-transactions-row">
+        <div class="ng-col-12">
+            <span>Kupuję na</span>
+            </br> <!--TODO walidacja-->
+            <input class="form-control"
+                   placeholder="26 cyfrowy numer konta"
+                   size="40"
+            />
+        </div>
+    </div>
+    <div class="row concluding-transactions-row">
+        <div class="ng-col-12">
+            <span>Sprzedaję z</span>
+            </br> <!--TODO walidacja-->
+            <input class="form-control"
+                   placeholder="26 cyfrowy numer konta"
+                   size="40"/>
+        </div>
+    </div>
+    <div class="row concluding-transactions-row">
+        <button type="button" class="refresh-button btn btn-primary">
+            <i class="fa fa-check-circle" aria-hidden="true"></i>
+            Sprawdź
+        </button>
     </div>
 </div>

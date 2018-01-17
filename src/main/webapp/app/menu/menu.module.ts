@@ -6,9 +6,11 @@ import { CurrencyExchangeSharedModule } from '../shared';
 import {
     TransactionsHistoryComponent,
     ExchangeRatesComponent,
-    ConcludingTransactionsRouteComponent,
+    ConcludingTransactionsModalService,
+    ConcludingTransactionsModalComponent,
     accountState
 } from './';
+import {ConcludingTransactionsApiService} from './concluding-transactions/concluding-transactions-api.service';
 
 @NgModule({
     imports: [
@@ -18,10 +20,12 @@ import {
     declarations: [
         TransactionsHistoryComponent,
         ExchangeRatesComponent,
-        ConcludingTransactionsRouteComponent
+        ConcludingTransactionsModalComponent
     ],
+    entryComponents: [ConcludingTransactionsModalComponent],
     providers: [
-
+        ConcludingTransactionsModalService,
+        ConcludingTransactionsApiService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
