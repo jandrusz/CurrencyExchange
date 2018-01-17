@@ -12,6 +12,10 @@ import {CurrencyDTO} from './currency-dto';
 })
 export class ConcludingTransactionsModalComponent implements AfterViewInit {
 
+    value: string;
+    fieldsAreCorrect: boolean = true;
+    bankAccountK: string;
+    bankAccountS: string;
     option: string;
     currency1: CurrencyDTO;
     currency2: CurrencyDTO;
@@ -39,6 +43,15 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         }).catch((err) => {
             return null;
         });
+    }
+
+    check() {
+        if (!this.option || !this.currency1 || !this.currency2 || !this.value || !this.bankAccountK ||
+            !this.bankAccountS || this.bankAccountK.length < 26 || this.bankAccountS.length < 26 || this.value.substr(this.value.indexOf(',') + 1).length > 2) {
+            this.fieldsAreCorrect = false;
+        } else {
+            this.fieldsAreCorrect = true;
+        }
     }
 
     cancel() {

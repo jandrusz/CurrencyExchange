@@ -6,28 +6,30 @@
 </div>
 <div class="modal-body">
     <div class="row concluding-transactions-row">
-        <div class="ng-col-12">
+        <div class="col-md-12">
             <select type="text" [(ngModel)]="option" (ngModelChange)="actionOption()">
                 <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
             </select>
         </div>
     </div>
     <div class="row concluding-transactions-row">
-        <div class="ng-col-4">
+        <div class="col-md-6">
             <span>Kwota</span>
             </br> <!--TODO walidacja-->
-            <input class="form-control"
+            <input [(ngModel)]="value"
+
+                   class="form-control"
                    placeholder="0,00zł"
                    size="30"/>
         </div>
-        <div class="ng-col-4 currency-dropdown">
+        <div class="col-md-3">
             <span>Waluta 1</span>
             </br>
             <select type="text" [(ngModel)]="currency1" (ngModelChange)="actionCurrency1()">
                 <option *ngFor="let currency of currencies1" [ngValue]="currency">{{currency.code}}</option>
             </select>
         </div>
-        <div class="ng-col-4 currency-dropdown">
+        <div class="col-md-3">
             <span>Waluta 2</span>
             </br>
             <select type="text" [(ngModel)]="currency2" (ngModelChange)="actionCurrency2()">
@@ -36,28 +38,39 @@
         </div>
     </div>
     <div class="row concluding-transactions-row">
-        <div class="ng-col-12">
+        <div class="col-md-12">
             <span>Kupuję na</span>
             </br> <!--TODO walidacja-->
-            <input class="form-control"
+            <input [(ngModel)]="bankAccountK"
+                   maxlength="26"
+                   class="form-control"
                    placeholder="26 cyfrowy numer konta"
                    size="40"
             />
         </div>
     </div>
     <div class="row concluding-transactions-row">
-        <div class="ng-col-12">
+        <div class="col-md-12">
             <span>Sprzedaję z</span>
             </br> <!--TODO walidacja-->
-            <input class="form-control"
+            <input [(ngModel)]="bankAccountS"
+                   maxlength="26"
+                   class="form-control"
                    placeholder="26 cyfrowy numer konta"
                    size="40"/>
         </div>
     </div>
     <div class="row concluding-transactions-row">
-        <button type="button" class="refresh-button btn btn-primary">
-            <i class="fa fa-check-circle" aria-hidden="true"></i>
-            Sprawdź
-        </button>
+        <div class="col-md-4 ">
+            <button type="button" class="btn btn-primary" (click)="check()">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                Sprawdź
+            </button>
+        </div>
+        <div class="col-md-8">
+            <div class="alert alert-danger" *ngIf="!fieldsAreCorrect">
+                <strong>Poprawnie uzupełnij wszystkie pola.</strong>
+            </div>
+        </div>
     </div>
 </div>
