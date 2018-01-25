@@ -11,6 +11,9 @@ import {
     accountState
 } from './';
 import {ConcludingTransactionsApiService} from './concluding-transactions/concluding-transactions-api.service';
+import {TransactionsHistoryApiService} from './transactions-history/transactions-history-api.service';
+import {OnlyNumber} from './concluding-transactions/only-number.directive';
+import {OnlyAmount} from './concluding-transactions/only-amount.directive';
 
 @NgModule({
     imports: [
@@ -20,12 +23,15 @@ import {ConcludingTransactionsApiService} from './concluding-transactions/conclu
     declarations: [
         TransactionsHistoryComponent,
         ExchangeRatesComponent,
-        ConcludingTransactionsModalComponent
+        ConcludingTransactionsModalComponent,
+        OnlyNumber,
+        OnlyAmount
     ],
     entryComponents: [ConcludingTransactionsModalComponent],
     providers: [
         ConcludingTransactionsModalService,
-        ConcludingTransactionsApiService
+        ConcludingTransactionsApiService,
+        TransactionsHistoryApiService
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

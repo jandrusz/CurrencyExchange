@@ -21,8 +21,9 @@ public class TransactionService {
         this.transactionMapper = transactionMapper;
     }
 
-    public Transaction saveTransaction(TransactionDTO transactionDTO) {
-        return transactionRepository.save(transactionMapper.mapToTransaction(transactionDTO));
+    public Integer saveTransaction(TransactionDTO transactionDTO) {
+        Transaction transaction = transactionRepository.save(transactionMapper.mapToTransaction(transactionDTO));
+        return transaction.getId().intValue();
     }
 
     public List<TransactionDTO> getTransactionsByUserId(Integer userid) {

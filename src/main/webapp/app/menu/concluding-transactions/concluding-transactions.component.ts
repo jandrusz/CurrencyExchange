@@ -4,6 +4,7 @@ import {ConcludingTransactionsApiService} from './concluding-transactions-api.se
 import {CurrencyDTO} from '../dto/currency-dto';
 import {ExchangeRatesApiService} from '../exchange-rates/exchange-rates-api.service';
 import {ExchangeRateDTO} from '../dto/exchange-rate-dto';
+import {TransactionDTO} from "../dto/transaction-dto";
 
 @Component({
     selector: 'jhi-concluding-transactions',
@@ -15,13 +16,16 @@ import {ExchangeRateDTO} from '../dto/exchange-rate-dto';
 export class ConcludingTransactionsModalComponent implements AfterViewInit {
 
     value: any;
-    fieldsAreCorrect: boolean = true;
-    showAcceptOrCancelTransaction: boolean = false;
-    showTransactionSum: boolean = false;
-    fieldsDisabled: boolean = false;
+    fieldsAreCorrect: boolean;
+    showAcceptOrCancelTransaction: boolean;
+    showTransactionSum: boolean;
+    fieldsDisabled: boolean;
+    transactionFinished: boolean;
     transactionSum: any;
     bankAccountK: any;
     bankAccountS: any;
+    transactionId: string;
+    exchangeRateForCurrencies: number;
     option: string;
     exchangeRate: ExchangeRateDTO;
     currency1: CurrencyDTO;
@@ -36,6 +40,11 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     constructor(public activeModal: NgbActiveModal,
                 private concludingTransactionsApiService: ConcludingTransactionsApiService,
                 private exchangeRatesApiService: ExchangeRatesApiService) {
+        this.fieldsAreCorrect = true;
+        this.showAcceptOrCancelTransaction = false;
+        this.showTransactionSum = false;
+        this.fieldsDisabled = false;
+        this.transactionFinished = false;
     }
 
     ngAfterViewInit(): void {
@@ -63,8 +72,8 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         } else {
             this.fieldsAreCorrect = true;
             this.showTransactionSum = true;
-            let exchangeRate = this.getExchangeRateForUser();
-            this.transactionSum = this.isFirstCurrencyPLN() ? this.value / exchangeRate : this.value * exchangeRate;
+            this.exchangeRateForCurrencies = this.getExchangeRateForUser();
+            this.transactionSum = this.isFirstCurrencyPLN() ? this.value / this.exchangeRateForCurrencies : this.value * this.exchangeRateForCurrencies;
             this.transactionSum = this.transactionSum.toFixed(2);
             this.fieldsDisabled = true;
             this.showAcceptOrCancelTransaction = true;
@@ -79,6 +88,13 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     }
 
     allFieldsAreCorrect() { // TODO walidacja dwóch miejsc po przecinku dla value
+
+        let regEx = new RegExp('^[1-9]*[.]?[0-9]?[0-9]$');
+        let amountRegEx = regEx.test(this.value);
+
+        regEx = new RegExp('^[0-9]*$');
+        let bankAccountRegEx = regEx.test(this.bankAccountK) && regEx.test(this.bankAccountS);
+
         return this.option &&
             this.currency1 &&
             this.currency2 &&
@@ -86,7 +102,9 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
             this.bankAccountK &&
             this.bankAccountS &&
             this.bankAccountK.length === 26 &&
-            this.bankAccountS.length === 26;
+            this.bankAccountS.length === 26 &&
+            amountRegEx &&
+            bankAccountRegEx;
     }
 
     getExchangeRate() {
@@ -112,7 +130,21 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     }
 
     acceptTransaction() {
-        // TODO zapis transakcji
+        this.transactionFinished = true;
+        return this.concludingTransactionsApiService.save(
+            new TransactionDTO(
+                this.option,
+                this.value,
+                this.currency1.code,
+                this.transactionSum,
+                this.currency2.code,
+                this.exchangeRateForCurrencies,
+                this.bankAccountK,
+                this.bankAccountS,
+                1
+            )).subscribe((res) => {
+                this.transactionId = res.text();
+        },);
     }
 
     cancelTransaction() {

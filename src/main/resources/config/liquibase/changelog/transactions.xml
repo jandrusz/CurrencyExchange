@@ -20,7 +20,7 @@
             <column name="bill_account_K" type="varchar(50)"/>
             <column name="bill_account_S" type="varchar(50)"/>
             <column name="user_id" type="bigint"/>
-            <column name="inclusion_date" type="timestamp"/>
+            <column name="inclusion_date" type="datetime"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

@@ -4,9 +4,10 @@
         <span aria-hidden="true">x</span>
     </button>
 </div>
-<div class="modal-body">
+<div class="modal-body" style="margin-top: -1rem;">
     <div class="row concluding-transactions-row" style="margin-left: 0.1rem;">
-        <div class="col-md-6" style="margin-top: 1.5rem">
+        <div class="col-md-6">
+            <div class="row"> <span>Kupuję/Sprzedaję</span></div>
             <div class="row">
                 <select [disabled]="disabled()" type="text" [(ngModel)]="option">
                     <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
@@ -14,8 +15,9 @@
             </div>
             <div class="row" style="margin-top: 0.8rem">
                 <span>Kwota</span>
-                </br> <!--TODO walidacja aby przyjmować tylko cyfry + tylko dwie po kropce-->
+                </br>
                 <input [(ngModel)]="value"
+                       OnlyAmount="true"
                        [disabled]="disabled()"
                        class="form-control"
                        placeholder="0,00zł"
@@ -27,14 +29,16 @@
                 <div class="col-md-6">
                     <span>Waluta 1</span>
                     </br>
-                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency1" (ngModelChange)="actionCurrency1()">
+                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency1"
+                            (ngModelChange)="actionCurrency1()">
                         <option *ngFor="let currency of currencies1" [ngValue]="currency">{{currency.code}}</option>
                     </select>
                 </div>
                 <div class="col-md-6">
                     <span>Waluta 2</span>
                     </br>
-                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency2" (ngModelChange)="actionCurrency2()">
+                    <select [disabled]="disabled()" type="text" [(ngModel)]="currency2"
+                            (ngModelChange)="actionCurrency2()">
                         <option *ngFor="let currency of currencies2" [ngValue]="currency">{{currency.code}}</option>
                     </select>
                 </div>
@@ -52,8 +56,9 @@
     <div class="row concluding-transactions-row">
         <div class="col-md-12">
             <span>Kupuję na</span>
-            </br> <!--TODO walidacja aby przyjmować tylko cyfry-->
+            </br>
             <input [(ngModel)]="bankAccountK"
+                   OnlyNumber="true"
                    maxlength="26"
                    [disabled]="disabled()"
                    class="form-control"
@@ -65,8 +70,9 @@
     <div class="row concluding-transactions-row">
         <div class="col-md-12">
             <span>Sprzedaję z</span>
-            </br> <!--TODO walidacja aby przyjmować tylko cyfry-->
+            </br>
             <input [(ngModel)]="bankAccountS"
+                   OnlyNumber="true"
                    maxlength="26"
                    [disabled]="disabled()"
                    class="form-control"
@@ -86,21 +92,28 @@
                 <strong>Poprawnie uzupełnij wszystkie pola.</strong>
             </div>
             <div class="alert alert-success" *ngIf="fieldsAreCorrect && showTransactionSum">
-                <strong>Kwota transakcji:{{transactionSum}} zł</strong>
+                <strong>Kwota transakcji: {{transactionSum}} zł</strong>
             </div>
         </div>
     </div>
     <div class="row" *ngIf="showAcceptOrCancelTransaction">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="!transactionFinished">
             <button type="button" class="btn btn-primary" (click)="acceptTransaction()">
                 <i class="fa fa-check" aria-hidden="true"></i>
                 Zatwierdź
             </button>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="!transactionFinished">
             <button type="button" class="btn btn-danger" style="float: right;" (click)="cancelTransaction()">
                 <i class="fa fa-times" aria-hidden="true"></i>
                 Anuluj
+            </button>
+        </div>
+        <div class="col-md-12" *ngIf="transactionFinished">
+            <span>Transakcja nr <strong>{{transactionId}}</strong> została pomyślnie zawarta</span>
+            <button type="button" class="btn btn-primary" style="float: right;" (click)="cancel()">
+                <i class="fa fa-times" aria-hidden="true"></i>
+                Zamknij
             </button>
         </div>
     </div>

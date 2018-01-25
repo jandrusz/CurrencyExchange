@@ -2,6 +2,7 @@ package com.apsi.domain;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,13 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "transactions")
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction implements Serializable {
 
     @Id
@@ -34,7 +39,7 @@ public class Transaction implements Serializable {
     @Column(name = "currency_2")
     private String currency2;
 
-    private String exchange;
+    private Float exchange;
 
     @Column(name = "bill_account_k")
     private String billAccountK;
@@ -44,5 +49,5 @@ public class Transaction implements Serializable {
 
     private Integer userId;
 
-    private Date inclusionDate;
+    private LocalDateTime inclusionDate;
 }

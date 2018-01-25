@@ -40,4 +40,12 @@ export class ExchangeRatesComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this.alive = false;
     }
+
+    getClass(index){
+        if(index%2 === 0){
+            return 'exchange-rates-value-row'
+        }
+    }
+
+
 }

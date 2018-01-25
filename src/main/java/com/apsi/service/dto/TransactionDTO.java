@@ -1,11 +1,15 @@
 package com.apsi.service.dto;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class TransactionDTO {
 
     private Long id;
@@ -20,7 +24,7 @@ public class TransactionDTO {
 
     private String currency2;
 
-    private String exchange;
+    private Float exchange;
 
     private String billAccountK;
 
@@ -28,5 +32,5 @@ public class TransactionDTO {
 
     private Integer userId;
 
-    private Date inclusionDate;
+    private LocalDateTime inclusionDate;
 }
