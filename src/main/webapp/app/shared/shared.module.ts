@@ -16,6 +16,7 @@ import {
     Principal,
     HasAnyAuthorityDirective,
 } from './';
+import {Broadcaster} from './broadcaster/broadcaster';
 
 @NgModule({
     imports: [
@@ -36,7 +37,8 @@ import {
         AuthServerProvider,
         UserService,
         ExchangeRatesApiService,
-        DatePipe
+        DatePipe,
+        Broadcaster
     ],
     entryComponents: [JhiLoginModalComponent],
     exports: [

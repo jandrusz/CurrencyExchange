@@ -12,8 +12,8 @@ import {
 } from './';
 import {ConcludingTransactionsApiService} from './concluding-transactions/concluding-transactions-api.service';
 import {TransactionsHistoryApiService} from './transactions-history/transactions-history-api.service';
-import {OnlyNumber} from './concluding-transactions/only-number.directive';
-import {OnlyAmount} from './concluding-transactions/only-amount.directive';
+import {OnlyNumberDirective} from './concluding-transactions/only-number.directive';
+import {OnlyAmountDirective} from './concluding-transactions/only-amount.directive';
 
 @NgModule({
     imports: [
@@ -24,8 +24,8 @@ import {OnlyAmount} from './concluding-transactions/only-amount.directive';
         TransactionsHistoryComponent,
         ExchangeRatesComponent,
         ConcludingTransactionsModalComponent,
-        OnlyNumber,
-        OnlyAmount
+        OnlyNumberDirective,
+        OnlyAmountDirective
     ],
     entryComponents: [ConcludingTransactionsModalComponent],
     providers: [

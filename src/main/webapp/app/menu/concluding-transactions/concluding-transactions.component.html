@@ -13,7 +13,7 @@
                     <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
                 </select>
             </div>
-            <div class="row" style="margin-top: 0.8rem">
+            <div class="row" style="margin-top: 0.8rem; padding-bottom: 1rem;">
                 <span>Kwota</span>
                 </br>
                 <input [(ngModel)]="value"
@@ -82,14 +82,14 @@
     </div>
     <div class="row concluding-transactions-row">
         <div class="col-md-4">
-            <button type="button" class="btn btn-primary" (click)="check()">
+            <button type="button" class="btn btn-primary" (click)="check()" [disabled]="transactionFinished">
                 <i class="fa fa-money" aria-hidden="true"></i>
                 Przelicz
             </button>
         </div>
         <div class="col-md-8">
             <div class="alert alert-danger" *ngIf="!fieldsAreCorrect">
-                <strong>Poprawnie uzupełnij wszystkie pola.</strong>
+                <strong>{{error}}</strong>
             </div>
             <div class="alert alert-success" *ngIf="fieldsAreCorrect && showTransactionSum">
                 <strong>Kwota transakcji: {{transactionSum}} zł</strong>

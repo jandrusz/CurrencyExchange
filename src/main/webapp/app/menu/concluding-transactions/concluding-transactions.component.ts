@@ -1,10 +1,11 @@
-import {AfterViewInit, Component} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConcludingTransactionsApiService} from './concluding-transactions-api.service';
 import {CurrencyDTO} from '../dto/currency-dto';
 import {ExchangeRatesApiService} from '../exchange-rates/exchange-rates-api.service';
 import {ExchangeRateDTO} from '../dto/exchange-rate-dto';
-import {TransactionDTO} from "../dto/transaction-dto";
+import {TransactionDTO} from '../dto/transaction-dto';
+import {Broadcaster} from '../../shared/broadcaster/broadcaster';
 
 @Component({
     selector: 'jhi-concluding-transactions',
@@ -36,10 +37,12 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     ];
     currencies1: Array<CurrencyDTO>;
     currencies2: Array<CurrencyDTO>;
+    error: string;
 
     constructor(public activeModal: NgbActiveModal,
                 private concludingTransactionsApiService: ConcludingTransactionsApiService,
-                private exchangeRatesApiService: ExchangeRatesApiService) {
+                private exchangeRatesApiService: ExchangeRatesApiService,
+                private broadcaster: Broadcaster) {
         this.fieldsAreCorrect = true;
         this.showAcceptOrCancelTransaction = false;
         this.showTransactionSum = false;
@@ -87,24 +90,43 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         return this.exchangeRate.rates[0].bid;
     }
 
-    allFieldsAreCorrect() { // TODO walidacja dwóch miejsc po przecinku dla value
-
+    allFieldsAreCorrect() {
         let regEx = new RegExp('^[1-9]*[.]?[0-9]?[0-9]$');
-        let amountRegEx = regEx.test(this.value);
+        const amountRegEx = regEx.test(this.value);
 
         regEx = new RegExp('^[0-9]*$');
-        let bankAccountRegEx = regEx.test(this.bankAccountK) && regEx.test(this.bankAccountS);
+        const bankAccountRegEx = regEx.test(this.bankAccountK) && regEx.test(this.bankAccountS);
 
-        return this.option &&
-            this.currency1 &&
-            this.currency2 &&
-            this.value &&
-            this.bankAccountK &&
-            this.bankAccountS &&
-            this.bankAccountK.length === 26 &&
-            this.bankAccountS.length === 26 &&
-            amountRegEx &&
-            bankAccountRegEx;
+        if (!this.option) {
+            this.error = 'Nie wybrałeś strony transakcji';
+            return false;
+        } else if (!this.currency1 || !this.currency2) {
+            this.error = 'Nie wybrałeś walut';
+            return false;
+        } else if (!this.value) {
+            this.error = 'Nie wpisałeś kwoty';
+            return false;
+        } else if (!amountRegEx) {
+            this.error = 'Niedozwolony format kwoty';
+            return false;
+        } else if (!this.bankAccountK) {
+            this.error = 'Niepoprawny numer konta "Kupuję na"';
+            return false;
+        } else if (!this.bankAccountS) {
+            this.error = 'Niepoprawny numer konta "Sprzedaję z"';
+            return false;
+        } else if (this.bankAccountK.length !== 26) {
+            this.error = 'Numer konta "Kupuję na" ma za mało cyfr';
+            return false;
+        } else if (this.bankAccountS.length !== 26) {
+            this.error = 'Numer konta "Sprzedaję z" ma za mało cyfr';
+            return false;
+        } else if (!bankAccountRegEx) {
+            this.error = 'Niedozwolony format numery konta';
+            return false;
+        }
+
+        return true;
     }
 
     getExchangeRate() {
@@ -143,8 +165,9 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
                 this.bankAccountS,
                 1
             )).subscribe((res) => {
-                this.transactionId = res.text();
-        },);
+            this.transactionId = res.text();
+            this.broadcaster.broadcast('newTransactionAdded');
+        });
     }
 
     cancelTransaction() {

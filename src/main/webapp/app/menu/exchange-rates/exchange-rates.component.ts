@@ -13,6 +13,7 @@ export class ExchangeRatesComponent implements OnInit, OnDestroy {
 
     public values: any[];
     private alive: boolean;
+    public loaded: boolean;
 
     constructor(private exchangeRatesApiService: ExchangeRatesApiService) {
         this.alive = true;
@@ -31,6 +32,7 @@ export class ExchangeRatesComponent implements OnInit, OnDestroy {
         return this.exchangeRatesApiService.get().toPromise().then((values) => {
             if (values) {
                 this.values = values;
+                this.loaded = true;
             }
         }).catch((err) => {
             return null;
@@ -41,11 +43,9 @@ export class ExchangeRatesComponent implements OnInit, OnDestroy {
         this.alive = false;
     }
 
-    getClass(index){
-        if(index%2 === 0){
+    getClass(index) {
+        if (index % 2 === 0) {
             return 'exchange-rates-value-row'
         }
     }
-
-
 }

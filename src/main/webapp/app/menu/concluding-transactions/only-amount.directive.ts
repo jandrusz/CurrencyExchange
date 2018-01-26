@@ -3,14 +3,14 @@ import {Directive, ElementRef, HostListener, Input} from '@angular/core';
 @Directive({
     selector: '[OnlyAmount]'
 })
-export class OnlyAmount {
+export class OnlyAmountDirective {
+
+    @Input() OnlyAmount: boolean;
 
     constructor(private el: ElementRef) {
     }
 
-    @Input() OnlyAmount: boolean;
-
-    @HostListener('keydown', ['$event']) onKeyDown(event) { //TODO do zrobienia dla wprowadzania kwoty na zawieraniu transakcji
+    @HostListener('keydown', ['$event']) onKeyDown(event) {
         let e = <KeyboardEvent> event;
         if (this.OnlyAmount) {
             if ([46, 8, 9, 27, 13, 110, 190].indexOf(e.keyCode) !== -1 ||

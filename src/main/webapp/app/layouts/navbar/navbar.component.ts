@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { ProfileService } from '../profiles/profile.service';
 import { Principal, LoginModalService, LoginService } from '../../shared';
-import {ConcludingTransactionsModalService} from '../../menu/concluding-transactions/concluding-transactions-modal.service';
+import {ConcludingTransactionsModalService} from '../../menu';
 
 import { VERSION } from '../../app.constants';
 

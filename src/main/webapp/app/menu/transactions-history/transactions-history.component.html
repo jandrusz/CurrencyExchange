@@ -1,19 +1,19 @@
-<div>
+<div *ngIf="loaded">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <h2 style="font: 3rem arial;">Historia transakcji</h2>
         </div>
     </div>
-    <div class="row" style="padding: 1rem">
+    <div class="row" style="padding: 1rem" *ngIf="transactionsExists()">
         <table class="transactions-history-table">
             <tr>
                 <th>Numer transakcji</th>
                 <th>Strona transakcji</th>
                 <th>Kwota wprowadzona</th>
                 <th>Waluta 1</th>
-                <th>Kwota obliczona</th>
                 <th>Waluta 2</th>
                 <th>Kurs</th>
+                <th>Kwota obliczona</th>
                 <th>Data i godzina transakcji</th>
                 <th>Rachunek kupna</th>
                 <th>Rachunek sprzedaży</th>
@@ -23,13 +23,16 @@
                 <td class="transactions-history-row">{{value.side}}</td>
                 <td class="transactions-history-row">{{value.insertedAmount}}</td>
                 <td class="transactions-history-row">{{value.currency1}}</td>
-                <td class="transactions-history-row">{{value.calculatedAmount}}</td>
                 <td class="transactions-history-row">{{value.currency2}}</td>
                 <td class="transactions-history-row">{{value.exchange}}</td>
+                <td class="transactions-history-row">{{value.calculatedAmount}}</td>
                 <td class="transactions-history-row">{{value.inclusionDate}}</td>
                 <td class="transactions-history-row">{{value.billAccountK}}</td>
                 <td class="transactions-history-row">{{value.billAccountS}}</td>
             </tr>
         </table>
+    </div>
+    <div class="row" style="padding: 1rem" *ngIf="!transactionsExists()">
+        <h4>Nie zawarłeś jeszcze żadnych transakcji.</h4>
     </div>
 </div>

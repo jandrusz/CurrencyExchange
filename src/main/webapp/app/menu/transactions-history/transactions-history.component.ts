@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {TransactionsHistoryApiService} from './transactions-history-api.service';
+import {Broadcaster} from '../../shared/broadcaster/broadcaster';
 
 @Component({
     selector: 'jhi-transactions-history',
@@ -11,14 +12,24 @@ import {TransactionsHistoryApiService} from './transactions-history-api.service'
 export class TransactionsHistoryComponent implements OnInit {
 
     public values: any[];
+    public loaded: boolean;
 
-    constructor(private transactionsHistoryApiService: TransactionsHistoryApiService) {
+    constructor(private transactionsHistoryApiService: TransactionsHistoryApiService,
+                private broadcaster: Broadcaster) {
     }
 
     ngOnInit() {
-        return this.transactionsHistoryApiService.get().toPromise().then((values) => {
+        this.reloadData();
+        this.broadcaster.on('newTransactionAdded').subscribe((message) => {
+            this.reloadData();
+        });
+    }
+
+    reloadData() {
+        this.transactionsHistoryApiService.get().toPromise().then((values) => {
             if (values) {
                 this.values = this.formatData(values);
+                this.loaded = true;
             }
         }).catch((err) => {
             return null;
@@ -34,10 +45,14 @@ export class TransactionsHistoryComponent implements OnInit {
         return values;
     }
 
-    getClass(index){
-        if(index%2 === 0){
+    getClass(index) {
+        if (index % 2 === 0) {
             return 'transactions-history-value-row'
         }
+    }
+
+    transactionsExists() {
+        return this.values.length !== 0;
     }
 
 }
