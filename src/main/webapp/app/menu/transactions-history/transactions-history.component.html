@@ -10,8 +10,6 @@
                 <th>Numer transakcji</th>
                 <th>Strona transakcji</th>
                 <th>Kwota wprowadzona</th>
-                <th>Waluta 1</th>
-                <th>Waluta 2</th>
                 <th>Kurs</th>
                 <th>Kwota obliczona</th>
                 <th>Data i godzina transakcji</th>
@@ -21,11 +19,9 @@
             <tr *ngFor='let value of values; let rowIndex = index;' class="{{getClass(rowIndex)}}">
                 <td class="transactions-history-row">{{value.id}}</td>
                 <td class="transactions-history-row">{{value.side}}</td>
-                <td class="transactions-history-row">{{value.insertedAmount}}</td>
-                <td class="transactions-history-row">{{value.currency1}}</td>
-                <td class="transactions-history-row">{{value.currency2}}</td>
+                <td class="transactions-history-row">{{value.insertedAmount}} {{value.currency1}}</td>
                 <td class="transactions-history-row">{{value.exchange}}</td>
-                <td class="transactions-history-row">{{value.calculatedAmount}}</td>
+                <td class="transactions-history-row">{{value.calculatedAmount}} {{value.currency2}}</td>
                 <td class="transactions-history-row">{{value.inclusionDate}}</td>
                 <td class="transactions-history-row">{{value.billAccountK}}</td>
                 <td class="transactions-history-row">{{value.billAccountS}}</td>

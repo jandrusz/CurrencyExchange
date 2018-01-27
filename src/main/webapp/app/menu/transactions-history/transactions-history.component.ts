@@ -41,6 +41,7 @@ export class TransactionsHistoryComponent implements OnInit {
             values[i].inclusionDate = values[i].inclusionDate.replace('T', ' ');
             values[i].insertedAmount = values[i].insertedAmount.toFixed(2);
             values[i].calculatedAmount = values[i].calculatedAmount.toFixed(2);
+            values[i].side = values[i].side === 'S' ? 'Sprzedaż' : 'Kupno';
         }
         return values;
     }

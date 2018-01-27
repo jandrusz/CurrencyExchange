@@ -98,13 +98,13 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         const bankAccountRegEx = regEx.test(this.bankAccountK) && regEx.test(this.bankAccountS);
 
         if (!this.option) {
-            this.error = 'Nie wybrałeś strony transakcji';
+            this.error = 'Nie wybrano strony transakcji';
             return false;
         } else if (!this.currency1 || !this.currency2) {
-            this.error = 'Nie wybrałeś walut';
+            this.error = 'Nie wybrano walut';
             return false;
         } else if (!this.value) {
-            this.error = 'Nie wpisałeś kwoty';
+            this.error = 'Nie wpisano kwoty';
             return false;
         } else if (!amountRegEx) {
             this.error = 'Niedozwolony format kwoty';
@@ -122,7 +122,7 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
             this.error = 'Numer konta "Sprzedaję z" ma za mało cyfr';
             return false;
         } else if (!bankAccountRegEx) {
-            this.error = 'Niedozwolony format numery konta';
+            this.error = 'Niedozwolony format numeru konta';
             return false;
         }
 
@@ -177,7 +177,9 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
 
     actionCurrency1() {
         if (this.currency1.code === 'PLN') {
-            this.currencies2 = this.currencies2.filter((item) => item.code !== this.currency1.code);
+            if (this.currency2.code === 'PLN') {
+                this.currency2 = undefined;
+            }
         } else if (this.currencies2.filter((item) => item.code === 'PLN').length === 0) {
             this.currencies2.unshift(new CurrencyDTO(1, 'PLN', 'złoty polski'))
         }
@@ -189,7 +191,9 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
 
     actionCurrency2() {
         if (this.currency2.code === 'PLN') {
-            this.currencies1 = this.currencies1.filter((item) => item.code !== this.currency2.code);
+            if (this.currency1.code === 'PLN') {
+                this.currency1 = undefined;
+            }
         } else if (this.currencies1.filter((item) => item.code === 'PLN').length === 0) {
             this.currencies1.unshift(new CurrencyDTO(1, 'PLN', 'złoty polski'))
         }

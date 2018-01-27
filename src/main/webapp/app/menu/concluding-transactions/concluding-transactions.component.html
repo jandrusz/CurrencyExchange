@@ -9,7 +9,7 @@
         <div class="col-md-6">
             <div class="row"> <span>Kupuję/Sprzedaję</span></div>
             <div class="row">
-                <select [disabled]="disabled()" type="text" [(ngModel)]="option">
+                <select [disabled]="disabled()" type="text" [(ngModel)]="option"> <!--TODO można dodać placeholder o tresci "-wybierz-"-->
                     <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
                 </select>
             </div>
@@ -20,7 +20,7 @@
                        OnlyAmount="true"
                        [disabled]="disabled()"
                        class="form-control"
-                       placeholder="0,00zł"
+                       placeholder="0.00"
                        size="30"/>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 <strong>{{error}}</strong>
             </div>
             <div class="alert alert-success" *ngIf="fieldsAreCorrect && showTransactionSum">
-                <strong>Kwota transakcji: {{transactionSum}} zł</strong>
+                <strong>Kwota transakcji: {{transactionSum}} {{currency2.code}}</strong>
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
             </button>
         </div>
         <div class="col-md-12" *ngIf="transactionFinished">
-            <span>Transakcja nr <strong>{{transactionId}}</strong> została pomyślnie zawarta</span>
+            <span>Transakcja o numerze <strong>{{transactionId}}</strong> została pomyślnie zawarta</span>
             <button type="button" class="btn btn-primary" style="float: right;" (click)="cancel()">
                 <i class="fa fa-times" aria-hidden="true"></i>
                 Zamknij
