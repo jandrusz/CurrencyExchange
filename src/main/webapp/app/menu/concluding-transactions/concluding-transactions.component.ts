@@ -1,9 +1,8 @@
-import {AfterViewInit, Component, EventEmitter} from '@angular/core';
+import {AfterViewInit, Component} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConcludingTransactionsApiService} from './concluding-transactions-api.service';
 import {CurrencyDTO} from '../dto/currency-dto';
 import {ExchangeRatesApiService} from '../exchange-rates/exchange-rates-api.service';
-import {ExchangeRateDTO} from '../dto/exchange-rate-dto';
 import {TransactionDTO} from '../dto/transaction-dto';
 import {Broadcaster} from '../../shared/broadcaster/broadcaster';
 
@@ -28,7 +27,6 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     transactionId: string;
     exchangeRateForCurrencies: number;
     option: string;
-    exchangeRate: ExchangeRateDTO;
     currency1: CurrencyDTO;
     currency2: CurrencyDTO;
     options: Array<Object> = [
@@ -75,7 +73,6 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         } else {
             this.fieldsAreCorrect = true;
             this.showTransactionSum = true;
-            this.exchangeRateForCurrencies = this.getExchangeRateForUser();
             this.transactionSum = this.isFirstCurrencyPLN() ? this.value / this.exchangeRateForCurrencies : this.value * this.exchangeRateForCurrencies;
             this.transactionSum = this.transactionSum.toFixed(2);
             this.fieldsDisabled = true;
@@ -83,11 +80,21 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
         }
     }
 
-    getExchangeRateForUser() {
-        if (this.exchangeRate && this.option === 'SELL') {
-            return this.exchangeRate.rates[0].ask;
+    getExchangeRateForUser(exchangeRate) {
+        let rate = exchangeRate.rates[0];
+        if (exchangeRate && this.option === 'SELL') {
+            if (this.isFirstCurrencyPLN()) {
+                return rate.ask;
+            } else {
+                return rate.bid;
+            }
+        } else if (exchangeRate && this.option === 'BUY') {
+            if (this.isFirstCurrencyPLN()) {
+                return rate.bid;
+            } else {
+                return rate.ask;
+            }
         }
-        return this.exchangeRate.rates[0].bid;
     }
 
     allFieldsAreCorrect() {
@@ -132,7 +139,7 @@ export class ConcludingTransactionsModalComponent implements AfterViewInit {
     getExchangeRate() {
         return this.exchangeRatesApiService.getCurrency(this.choseProperCurrencyCode()).toPromise().then((exchangeRate) => {
             if (exchangeRate) {
-                this.exchangeRate = exchangeRate;
+                this.exchangeRateForCurrencies = this.getExchangeRateForUser(exchangeRate);
             }
         }).catch((err) => {
             return null;

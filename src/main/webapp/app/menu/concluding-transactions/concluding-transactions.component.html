@@ -9,7 +9,7 @@
         <div class="col-md-6">
             <div class="row"> <span>Kupuję/Sprzedaję</span></div>
             <div class="row">
-                <select [disabled]="disabled()" type="text" [(ngModel)]="option"> <!--TODO można dodać placeholder o tresci "-wybierz-"-->
+                <select [disabled]="disabled()" type="text" [(ngModel)]="option" (ngModelChange)="getExchangeRate()">
                     <option *ngFor="let option of options" [ngValue]="option.value">{{option.name}}</option>
                 </select>
             </div>
@@ -45,9 +45,8 @@
             </div>
             <div class="row" style="margin-top: 1.5rem;">
                 <div class="col-md-12">
-                    <div class="alert alert-success" *ngIf="exchangeRate && option">
-                        <strong *ngIf="option === 'SELL'">Kurs: {{exchangeRate.rates[0].ask}}</strong>
-                        <strong *ngIf="option === 'BUY'">Kurs: {{exchangeRate.rates[0].bid}}</strong>
+                    <div class="alert alert-success" *ngIf="exchangeRateForCurrencies && option && currency1 && currency2">
+                        <strong>Kurs: {{exchangeRateForCurrencies}}</strong>
                     </div>
                 </div>
             </div>
